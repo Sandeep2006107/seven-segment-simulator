@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1020">
+    <title>Seven Segment Lab | Interactive Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="brand">
+        <div class="brand-icon">7S</div>
+        <div>
+            <h1>Seven Segment Lab</h1>
+            <p>Interactive Digital Electronics Simulator</p>
+        </div>
+    </div>
+    <span class="live-badge"><i></i> SIMULATOR READY</span>
+</header>
+
+<main class="layout">
+
+    <section class="hero">
+        <div>
+            <p class="eyebrow">DIGITAL ELECTRONICS LAB</p>
+            <h2>Input. Decode. <span>Illuminate.</span></h2>
+            <p class="hero-text">
+                Enter a number, binary value or hexadecimal digit
+                and watch the corresponding LED segments activate.
+            </p>
+        </div>
+        <div class="hero-symbol">8</div>
+    </section>
+
+    <section class="workspace">
+
+        <div class="card input-card">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">01 / INPUT</p>
+                    <h3>Input Controller</h3>
+                </div>
+                <span class="step-number">01</span>
+            </div>
+
+            <label for="inputMode">Input format</label>
+            <select id="inputMode">
+                <option value="decimal">Decimal (0–9 digits)</option>
+                <option value="binary">Binary (4-bit groups)</option>
+                <option value="hex">Hexadecimal (0–F)</option>
+            </select>
+
+            <label for="userInput">Enter your input</label>
+            <input id="userInput" type="text"
+                   autocomplete="off" spellcheck="false"
+                   placeholder="e.g. 12345">
+
+            <p class="helper" id="inputHint">
+                Type any number. The display updates automatically.
+            </p>
+
+            <div class="presets">
+                <button class="preset" data-value="12345">12345</button>
+                <button class="preset" data-value="2026">2026</button>
+                <button class="preset" data-value="8675309">8675309</button>
+                <button class="preset" data-value="808">808</button>
+            </div>
+
+            <div class="button-row">
+                <button class="btn btn-primary" id="demoBtn">Load Example</button>
+                <button class="btn btn-secondary" id="clearBtn">Clear</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <label for="displayMode">Display logic</label>
+            <select id="displayMode">
+                <option value="cc">Common Cathode — Active HIGH</option>
+                <option value="ca">Common Anode — Active LOW</option>
+            </select>
+
+            <p class="helper">
+                The display appearance stays the same; the electrical
+                ON/OFF logic changes with the selected mode.
+            </p>
+        </div>
+
+        <div class="card display-card">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">02 / OUTPUT</p>
+                    <h3>Live LED Display</h3>
+                </div>
+                <span class="live-label"><i></i> LIVE</span>
+            </div>
+
+            <div class="display-shell">
+                <div class="display" id="display" aria-label="LED output">
+                    <p class="empty-display">Enter input to begin</p>
+                </div>
+            </div>
+
+            <div class="output-meta">
+                <div>
+                    <span class="meta-label">DECODED OUTPUT</span>
+                    <strong id="decodedOutput">—</strong>
+                </div>
+                <div>
+                    <span class="meta-label">DIGITS</span>
+                    <strong id="digitCount">0</strong>
+                </div>
+            </div>
+
+            <div class="status-box" id="status" aria-live="polite">
+                Ready. Waiting for input.
+            </div>
+
+            <div class="button-row display-actions">
+                <button class="btn btn-primary" id="autoBtn">▶ Auto Count</button>
+                <button class="btn btn-secondary" id="resetBtn">↻ Reset</button>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="card segment-card">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">03 / SEGMENT ANALYSIS</p>
+                <h3>Individual LED Controls</h3>
+            </div>
+            <span class="step-number">02</span>
+        </div>
+
+        <p class="helper">
+            Select any segment to switch it ON or OFF manually.
+            Manual mode temporarily overrides the decoded output.
+        </p>
+
+        <div class="manual-layout">
+            <div class="manual-display-wrap">
+                <div class="digit manual-digit" id="manualDisplay"></div>
+                <p class="manual-caption">MANUAL TEST DISPLAY</p>
+            </div>
+
+            <div class="segment-controls" id="segmentControls"></div>
+        </div>
+
+        <div class="button-row">
+            <button class="btn btn-primary" id="applyPatternBtn">
+                Restore Decoded Pattern
+            </button>
+            <button class="btn btn-secondary" id="allOffBtn">
+                Turn All Segments OFF
+            </button>
+        </div>
+    </section>
+
+    <section class="card analysis-card">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">04 / LOGIC ANALYSIS</p>
+                <h3>Segment Truth Table</h3>
+            </div>
+        </div>
+
+        <p class="helper">
+            ON and OFF show the visual state. HIGH and LOW show the
+            electrical logic for the selected display type.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Digit</th>
+                        <th>A</th><th>B</th><th>C</th>
+                        <th>D</th><th>E</th><th>F</th><th>G</th>
+                    </tr>
+                </thead>
+                <tbody id="truthTable"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="card explanation-card">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">05 / LEARN</p>
+                <h3>How the Decoder Works</h3>
+            </div>
+        </div>
+
+        <div class="learn-grid">
+            <article>
+                <span class="learn-icon">01</span>
+                <h4>Input</h4>
+                <p>A decimal digit, binary group or hexadecimal symbol is entered.</p>
+            </article>
+            <article>
+                <span class="learn-icon">02</span>
+                <h4>Decode</h4>
+                <p>The program maps the symbol to its required segments A–G.</p>
+            </article>
+            <article>
+                <span class="learn-icon">03</span>
+                <h4>Illuminate</h4>
+                <p>The required LED segments glow while the remaining segments stay off.</p>
+            </article>
+        </div>
+
+        <p class="note">
+            Educational software simulation only. This is not a physical
+            circuit simulator and does not model current, voltage or a
+            real decoder IC.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    Seven Segment Lab <span>•</span> Built with HTML, CSS & JavaScript
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
